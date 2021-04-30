@@ -7,7 +7,8 @@ import { Server as SocketIOServer } from 'socket.io'
 import { ChatServer } from './chat.server'
 import path from 'path'
 
-mongoose.connect(String(process.env.MONGO_URI), {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
+const mongoUrl = `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DB}?authSource=admin`;
+mongoose.connect(mongoUrl, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
 mongoose.connection.on('connected', () => {
     console.log('Database connected')
 })
