@@ -1,0 +1,39 @@
+services:
+  node-web:
+    build: 
+      context: .
+      dockerfile: ./docker/web.dockerfile
+    container_name: chat-web
+    restart: unless-stopped
+    environment:
+      - MONGO_USERNAME=${MONGO_USERNAME}
+      - MONGO_PASSWORD=${MONGO_PASSWORD}
+      - MONGO_HOST=${MONGO_HOST}
+      - MONGO_PORT=${MONGO_PORT}
+      - MONGO_DB=${MONGO_DB}
+      - SERVER_PORT=${SERVER_PORT}
+      - CLIENT_ID=${CLIENT_ID}
+      - CLIENT_SECRET=${CLIENT_SECRET}
+      - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
+    ports:
+      - "5000:${SERVER_PORT}"
+    depends_on:
+      - mongo-db
+
+  mongo-db:
+    image: "mongo:4.2"
+    container_name: chat-db
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=admin
+      - MONGO_DATABASE=${MONGO_DB}
+
+    ports:
+      - "27017:${MONGO_PORT}"
+    volumes:
+      - mongo-volume:/data/db
+      - ./mongo-entrypoint/entrypoint.js:/docker-entrypoint-initdb.d/entrypoint.js:ro
+volumes:
+  mongo-volume:

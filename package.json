@@ -4,8 +4,10 @@
   "description": "This is a simple chat application.",
   "main": "index.js",
   "scripts": {
-    "dev": "./node_modules/.bin/env-cmd -f ./dev.env node dist/index.js",
-    "start": "tsc && npm run dev"
+    "local-config": "./node_modules/.bin/env-cmd -f ./.env node dist/index.js",
+    "dev-config": "./node_modules/.bin/env-cmd -f ./dev.env node dist/index.js",
+    "local": "tsc && npm run local-config",
+    "dev": "tsc && npm run dev-config"
   },
   "author": "Palden Sherpa",
   "license": "ISC",
